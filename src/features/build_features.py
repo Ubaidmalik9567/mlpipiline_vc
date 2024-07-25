@@ -1,25 +1,25 @@
 import pandas as pd
 import sys
 import yaml
-from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import CountVectorizer
 import pathlib
 import logging
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-def apply_tfidf(train_data: pd.DataFrame, test_data: pd.DataFrame, no_of_features: int) -> tuple:
+def apply_bow(train_data: pd.DataFrame, test_data: pd.DataFrame, no_of_features: int) -> tuple:
     try:
-        logging.info("Starting TF-IDF transformation.")
+        logging.info("Starting Bag of Words transformation.")
 
-        vectorizer = TfidfVectorizer(max_features=no_of_features)
+        vectorizer = CountVectorizer(max_features=no_of_features)
 
         X_train = train_data['content'].values
         y_train = train_data['sentiment'].values
         X_test = test_data['content'].values
         y_test = test_data['sentiment'].values
 
-        logging.info("Fitting TF-IDF Vectorizer to training data.")
+        logging.info("Fitting Bag of Words Vectorizer to training data.")
         X_train_bow = vectorizer.fit_transform(X_train)
         logging.info("Transforming test data.")
         X_test_bow = vectorizer.transform(X_test)
@@ -30,10 +30,10 @@ def apply_tfidf(train_data: pd.DataFrame, test_data: pd.DataFrame, no_of_feature
         test_df = pd.DataFrame(X_test_bow.toarray())
         test_df['label'] = y_test
 
-        logging.info("TF-IDF transformation completed successfully.")
+        logging.info("Bag of Words transformation completed successfully.")
         return train_df, test_df
     except Exception as e:
-        logging.error(f"Error during TF-IDF transformation: {e}")
+        logging.error(f"Error during Bag of Words transformation: {e}")
         raise
 
 def save_data(traindata: pd.DataFrame, testdata: pd.DataFrame, path: str) -> None:
@@ -65,7 +65,7 @@ def main():
         train_df.fillna('', inplace=True)
         test_df.fillna('', inplace=True)
 
-        process_train_df, process_test_df = apply_tfidf(train_df, test_df, parameters["max_features"])
+        process_train_df, process_test_df = apply_bow(train_df, test_df, parameters["max_features"])
         save_data(process_train_df, process_test_df, processed_data_saving_path)
 
         logging.info("Main function completed successfully.")
