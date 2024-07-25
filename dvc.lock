@@ -49,27 +49,27 @@ stages:
       size: 400587
     - path: ./src/features/build_features.py
       hash: md5
-      md5: 6bd3381b8956d317a037eab78574da8f
-      size: 5244
+      md5: bb78f499aaf03c46b3ff76ead88c29ba
+      size: 5224
     params:
       params.yaml:
         build_features.max_features: 50
     outs:
     - path: ./data/processed/processed_testdata.csv
       hash: md5
-      md5: 2ce270297224936f6c7a019e068ddf15
-      size: 320786
+      md5: e12cd19eb36a975bcee4a2ab42c7e380
+      size: 698364
     - path: ./data/processed/processed_traindata.csv
       hash: md5
-      md5: 6a441e0616feadff5f161b7608071634
-      size: 748030
+      md5: 845414c8280f6eff040087b690203648
+      size: 1630851
   train_model:
     cmd: python ./src/models/train_model.py /data/processed
     deps:
     - path: ./data/processed/processed_traindata.csv
       hash: md5
-      md5: 6a441e0616feadff5f161b7608071634
-      size: 748030
+      md5: 845414c8280f6eff040087b690203648
+      size: 1630851
     - path: ./src/models/train_model.py
       hash: md5
       md5: 0a6d32cd7ebb1b482b55d7f05d884b09
@@ -80,15 +80,15 @@ stages:
     outs:
     - path: ./models/model.pkl
       hash: md5
-      md5: e42120be879e9f48978980c084e22d87
-      size: 70156
+      md5: 1ab8785953dc961998ac551007989703
+      size: 68716
   predict_model:
     cmd: python ./src/models/predict_model.py /data/processed
     deps:
     - path: ./data/processed/processed_testdata.csv
       hash: md5
-      md5: 2ce270297224936f6c7a019e068ddf15
-      size: 320786
+      md5: e12cd19eb36a975bcee4a2ab42c7e380
+      size: 698364
     - path: ./src/models/predict_model.py
       hash: md5
       md5: 5d592d9be9441103b28f2fee4649a5ff
@@ -96,5 +96,5 @@ stages:
     outs:
     - path: ./reports/metrics.json
       hash: md5
-      md5: 2006b450f30de93ae99aeb4deaf832f4
-      size: 146
+      md5: 32c626f052300acc3a1853eacf98ecdc
+      size: 145
